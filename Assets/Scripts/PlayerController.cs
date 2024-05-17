@@ -21,42 +21,55 @@ public class PlayerController : MonoBehaviour
     private int extraJumps;
     public int extraJumpsValue;
 
+    public Joystick joystick;
 
-    
-    void Start (){
+    void Start()
+    {
         extraJumps = extraJumpsValue;
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate(){
+    void FixedUpdate()
+    {
 
-        isGrounded =  Physics2D.OverlapCircle(groundCheck.position, checkRadius,whatIsGround);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
-        moveInput = Input.GetAxisRaw("Horizontal");
+        moveInput = joystick.Horizontal;
+
         rb.velocity = new UnityEngine.Vector2(moveInput * speed, rb.velocity.y);
 
-        if(facingRight == false && moveInput > 0){
+        if (facingRight == false && moveInput > 0)
+        {
             Flip();
-        }else if(facingRight == true && moveInput < 0){
+        }
+        else if (facingRight == true && moveInput < 0)
+        {
             Flip();
 
         }
     }
 
-    void Update(){
+    void Update()
+    {
 
-        if(isGrounded == true){
+        if (isGrounded == true)
+        {
             extraJumps = extraJumpsValue;
         }
 
-        if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("w")) && extraJumps > 0){
+        if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("w")) && extraJumps > 0)
+        {
             rb.velocity = UnityEngine.Vector2.up * jumpForce;
             extraJumps--;
-        }else if((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("w")) && extraJumps == 0 && isGrounded == true){
+        }
+        else if ((Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("w")) && extraJumps == 0 && isGrounded == true)
+        {
             rb.velocity = UnityEngine.Vector2.up * jumpForce;
         }
+
     }
-    void Flip(){
+    void Flip()
+    {
         facingRight = !facingRight;
         UnityEngine.Vector3 Scaler = transform.localScale;
         Scaler.x *= -1;
